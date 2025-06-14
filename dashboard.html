@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard Tarobill</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendors/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="assets/vendors/glightbox/glightbox.min.css" rel="stylesheet">
+    <link href="assets/vendors/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link href="assets/vendors/aos/aos.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+        /* Styling untuk navbar agar link aktif terlihat */
+        .navbar-nav .nav-link.active {
+            font-weight: bold;
+            color: #800080 !important;
+            /* Warna ungu untuk link aktif */
+            border-bottom: none;
+            /* Menghilangkan garis bawah */
+        }
+
+        /* Styling tambahan untuk logo Tarobill di navbar jika menggunakan gambar */
+        .navbar-brand img {
+            height: 80px;
+            /* Sesuaikan tinggi logo */
+            width: auto;
+            vertical-align: middle;
+        }
+
+        /* Styling untuk tombol logout */
+        .btn-logout {
+            background-color: #800080 !important;
+            border-color: #800080 !important;
+            color: white !important;
+        }
+
+        .btn-logout:hover {
+            background-color: #6a006a !important;
+            border-color: #6a006a !important;
+        }
+
+        /* Styling untuk modal logout */
+        .modal-content.bg-dark {
+            background-color: #343a40 !important;
+        }
+
+        .modal-content .btn-modal-batal {
+            background-color: #800080 !important;
+            border-color: #800080 !important;
+            color: white !important;
+        }
+
+        .modal-content .btn-modal-batal:hover {
+            background-color: #6a006a !important;
+            border-color: #6a006a !important;
+        }
+
+        /* SPA Styling: Menyembunyikan dan menampilkan section */
+        .content-section {
+            display: none;
+            /* Default: sembunyikan semua section konten */
+            padding: 20px 0;
+            /* Sesuaikan padding agar tidak terlalu mepet */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            /* Transisi untuk efek fade-in/fade-out */
+        }
+
+        .content-section.active {
+            display: block;
+            /* Tampilkan section yang aktif */
+            opacity: 1;
+        }
+
+        /* Tambahan: Pastikan main content memiliki padding atas untuk menghindari bertumpuk dengan navbar */
+        body {
+            padding-top: 70px;
+            /* Sesuaikan sesuai tinggi navbar Anda */
+        }
+
+        main.container {
+            min-height: calc(100vh - 200px);
+            /* Contoh min-height agar footer di bawah */
+        }
+
+        /* Custom CSS untuk Footer (dari diskusi sebelumnya) */
+        .footer {
+            background-color: purple;
+            padding: 10px 0;
+            /* Mengurangi padding atas dan bawah */
+            color: white;
+            /* Pastikan teks di footer berwarna putih */
+        }
+
+        .footer h2,
+        .footer h3,
+        .footer h4 {
+            font-size: 1.1rem;
+            /* Ukuran font judul */
+            margin-bottom: 10px;
+            /* Margin bawah judul */
+            color: white;
+            /* Pastikan judul berwarna putih */
+        }
+
+        .footer ul li {
+            padding: 0;
+            margin: 0 0 5px 0;
+            /* Mengurangi margin bawah list item */
+        }
+
+        .footer ul li a {
+            font-size: 0.85rem;
+            /* Ukuran font untuk link */
+            line-height: 1.4;
+            /* Line-height untuk kerapatan teks */
+            color: white;
+            /* Link di footer berwarna putih */
+            text-decoration: none;
+        }
+
+        .footer ul li a:hover {
+            color: #ccc;
+            /* Warna hover untuk link di footer */
+        }
+
+        .footer p {
+            font-size: 0.85rem;
+            /* Ukuran font untuk paragraf */
+            line-height: 1.4;
+            color: white;
+            /* Paragraf di footer berwarna putih */
+        }
+
+        .footer .quick-contact i {
+            color: white;
+            /* Ikon kontak berwarna putih */
+            font-size: 0.85rem;
+            /* Ukuran ikon kontak */
+        }
+
+        .footer .credits {
+            font-size: 0.8rem;
+            /* Ukuran font credit */
+            margin-top: 15px;
+            /* Jarak dari konten atas */
+            color: white;
+            /* Teks credit berwarna putih */
+        }
+
+        /* Tambahan untuk styling CRUD */
+        .table img {
+            max-width: 50px;
+            height: auto;
+        }
+
+        .action-buttons .btn {
+            margin-right: 5px;
+        }
+
+        .btn-primary {
+            background-color: purple;
+        }
+
+        .btn-primary:hover {
+            background-color: #3c128b !important;
+            border-color: #3c128b !important;
+        }
+
+        .btn-danger {
+            background-color: red;
+        }
+
+        .btn-danger:hover {
+            background-color: #771717 !important;
+            border-color: #771717 !important;
+        }
+
+        .btn-info {
+            background-color: purple;
+        }
+
+        .btn-info:hover {
+            background-color: #3c128b !important;
+            border-color: #3c128b !important;
+        }
+
+        .btn-success {
+            background-color: green;
+        }
+
+        .btn-success:hover {
+            background-color: #064703 !important;
+            border-color: #064703 !important;
+        }
+
+        .btn-secondary {
+            background-color: purple;   
+        }
+
+        .btn-secondary:hover {
+            background-color: #3c128b !important;
+            border-color: #3c128b !important;
+        }
+
+    </style>
+
+    <script>
+        (function () {
+            const storedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-bs-theme', storedTheme);
+        })();
+    </script>
+</head>
+
+<body>
+
+    <header class="fbs__net-navbar navbar navbar-expand-lg dark bg-light fixed-top"
+        aria-label="freebootstrap.net navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a class="navbar-brand w-auto" href="#tagihan" data-section="tagihan">
+                <img class="logo dark img-fluid" src="assets/images/logo.png" alt="Tarobill Logo">
+                <img class="logo light img-fluid" src="assets/images/logo.png" alt="Tarobill Logo">
+            </a>
+            <div class="offcanvas offcanvas-start w-75" id="fbs__net-navbars" tabindex="-1"
+                aria-labelledby="fbs__net-navbarsLabel">
+                <div class="offcanvas-header">
+                    <div class="offcanvas-header-logo">
+                        <a class="logo-link" id="fbs__net-navbarsLabel" href="#tagihan" data-section="tagihan">
+                            <img class="logo dark img-fluid" src="assets/images/logo-dark.svg" alt="Tarobill Logo">
+                            <img class="logo light img-fluid" src="assets/images/logo-light.svg" alt="Tarobill Logo">
+                        </a>
+                    </div>
+                    <button class="btn-close btn-close-black" type="button" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body align-items-lg-center">
+                    <ul class="navbar-nav nav me-auto ps-lg-5 mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link scroll-link active" aria-current="page" href="#tagihan"
+                                data-section="tagihan">Tagihan</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link scroll-link" href="#riwayat" data-section="riwayat">Riwayat</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link scroll-link" href="#jadwal" data-section="jadwal">Jadwal</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ms-auto w-auto">
+                <div class="header-social d-flex align-items-center gap-1">
+                    <button class="btn btn-logout py-2" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        Logout
+                    </button>
+                </div>
+                <button class="fbs__net-navbar-toggler justify-content-center align-items-center ms-auto"
+                    data-bs-toggle="offcanvas" data-bs-target="#fbs__net-navbars" aria-controls="fbs__net-navbars"
+                    aria-label="Toggle navigation" aria-expanded="false">
+                    <svg class="fbs__net-icon-menu" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <line x1="21" x2="3" y1="6" y2="6"></line>
+                        <line x1="15" x2="3" y1="12" y2="12"></line>
+                        <line x1="17" x2="3" y1="18" y2="18"></line>
+                    </svg>
+                    <svg class="fbs__net-icon-close" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="tagihan" class="content-section active">
+            <h2 class="my-4">Daftar Tagihan Anda</h2>
+
+            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addTagihanModal">
+                <i class="bi bi-plus-circle"></i> Tambah Tagihan Baru
+            </button>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nama Tagihan</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Jatuh Tempo</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tagihanTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="riwayat" class="content-section">
+            <h2 class="my-4">Riwayat Pembayaran</h2>
+            <p>Berikut adalah daftar transaksi pembayaran Anda sebelumnya.</p>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tanggal Pembayaran</th>
+                            <th scope="col">Jenis Tagihan</th>
+                            <th scope="col">Harga</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riwayatTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="jadwal" class="content-section">
+            <h2 class="my-4">Jadwal Pembayaran Mendatang</h2>
+            <p>Berikut adalah pengingat untuk tagihan yang akan datang.</p>
+            <div class="card mt-4">
+                <div class="card-header">
+                    Daftar Jadwal
+                </div>
+                <ul class="list-group list-group-flush" id="jadwalList">
+                    </ul>
+            </div>
+        </section>
+    </main>
+    <footer class="footer pt-5 pb-5">
+        <div class="container py-3">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 mb-3 mb-lg-0">
+                    <h3 class="mb-2">Tentang Kami</h3>
+                    <p>
+                        Taro Bill hadir sebagai asisten cerdas Anda dalam mengelola dan mengingat semua tagihan tepat
+                        waktu. Kami adalah perusahaan *fintech* terkemuka yang didirikan dengan misi memberdayakan
+                        individu dan bisnis melalui layanan finansial yang aman, efisien, dan mudah digunakan.
+                    </p>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3 mb-lg-0 offset-lg-1">
+                    <h3 class="mb-2">Akun</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="register.html">Register</a></li>
+                        <li><a href="login.html">Sign in</a></li>
+                        <li><a href="lupa-password.html">Forgot Password</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-3 mb-lg-0 quick-contact">
+                    <h3 class="mb-2">Kontak</h3>
+                    <p class="d-flex mb-2"><i class="bi bi-geo-alt-fill me-2"></i>
+                        <span>Jl. Raya Lenteng Agung No.20-21, RT.4/RW.1, Srengseng Sawah, Kec. Jagakarsa, <br> Jakarta
+                            Selatan </span>
+                    </p>
+                    <a class="d-flex mb-2" href="mailto:tarobill@gmail.com">
+                        <i class="bi bi-envelope-fill me-2"></i><span>tarobill@gmail.com</span>
+                    </a>
+                    <a class="d-flex mb-2" href="tel:+6289528127834">
+                        <i class="bi bi-telephone-fill me-2"></i><span>+6289528127834</span>
+                    </a>
+                </div>
+            </div>
+            <div class="text-center mt-4 credits">
+                <p>&copy; <span id="currentYear"></span> Tarobill. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-light rounded-4 p-4 border-0">
+                <div class="text-center">
+                    <h4 class="fw-bold text-danger mb-3">Logout Akun</h4>
+                    <p class="mb-4">Apakah Kamu Yakin Ingin Keluar?</p>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-modal-batal px-4" data-bs-dismiss="modal">Batal</button>
+                        <a href="index.html" class="btn btn-danger px-4">Ya, Keluar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="addTagihanModal" tabindex="-1" aria-labelledby="addTagihanModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTagihanModalLabel">Tambah Tagihan Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTagihanForm">
+                        <div class="mb-3">
+                            <label for="namaTagihan" class="form-label">Nama Tagihan</label>
+                            <input type="text" class="form-control" id="namaTagihan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="hargaTagihan" class="form-label">Harga</label>
+                            <input type="number" class="form-control" id="hargaTagihan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jatuhTempo" class="form-label">Jatuh Tempo</label>
+                            <input type="date" class="form-control" id="jatuhTempo" required>
+                        </div>
+                        <input type="hidden" id="statusTagihan" value="Belum Bayar">
+                        <button type="submit" class="btn btn-primary">Simpan Tagihan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editTagihanModal" tabindex="-1" aria-labelledby="editTagihanModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTagihanModalLabel">Edit Tagihan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTagihanForm">
+                        <input type="hidden" id="editTagihanId">
+                        <div class="mb-3">
+                            <label for="editNamaTagihan" class="form-label">Nama Tagihan</label>
+                            <input type="text" class="form-control" id="editNamaTagihan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editJumlahTagihan" class="form-label">Harga</label>
+                            <input type="number" class="form-control" id="editJumlahTagihan" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editJatuhTempo" class="form-label">Jatuh Tempo</label>
+                            <input type="date" class="form-control" id="editJatuhTempo" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editStatusTagihan" class="form-label">Status</label>
+                            <select class="form-select" id="editStatusTagihan">
+                                <option value="Belum Bayar">Belum Bayar</option>
+                                <option value="Lunas">Lunas</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteTagihanModal" tabindex="-1" aria-labelledby="deleteTagihanModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteTagihanModalLabel">Konfirmasi Hapus</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus tagihan ini?</p>
+                    <input type="hidden" id="deleteTagihanId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="setReminderModal" tabindex="-1" aria-labelledby="setReminderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="setReminderModalLabel">Atur Pengingat Tagihan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="setReminderForm">
+                        <input type="hidden" id="reminderTagihanId">
+                        <p>Mengatur pengingat untuk: <strong id="reminderTagihanName"></strong></p>
+                        <div class="mb-3">
+                            <label for="reminderDate" class="form-label">Tanggal Pengingat</label>
+                            <input type="date" class="form-control" id="reminderDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reminderTime" class="form-label">Waktu Pengingat</label>
+                            <input type="time" class="form-control" id="reminderTime" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Simpan Pengingat</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendors/glightbox/glightbox.min.js"></script>
+    <script src="assets/vendors/swiper/swiper-bundle.min.js"></script>
+    <script src="assets/vendors/aos/aos.js"></script>
+    <script>
+        // --- CRUD Logic (Integrasi dengan Backend PHP) ---
+        const tagihanTableBody = document.getElementById('tagihanTableBody');
+        const riwayatTableBody = document.getElementById('riwayatTableBody');
+        const jadwalList = document.getElementById('jadwalList'); // Untuk jadwal
+        const addTagihanForm = document.getElementById('addTagihanForm');
+        const editTagihanForm = document.getElementById('editTagihanForm');
+        const deleteTagihanModal = document.getElementById('deleteTagihanModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        // Untuk fitur pengingat
+        const setReminderModal = document.getElementById('setReminderModal');
+        const setReminderForm = document.getElementById('setReminderForm');
+
+
+        // --- PENTING: GANTI DENGAN URL API ANDA YANG BENAR ---
+        const API_URL = 'http://localhost/tarobill-app/api/tagihan.php';
+        // ---------------------------------------------------
+
+        let activeTagihanData = []; // Data untuk tabel "Tagihan" (status 'Belum Bayar')
+        let paidHistoryData = [];   // Data untuk tabel "Riwayat" (dari tabel riwayat_pembayaran)
+        let upcomingJadwalData = []; // Data untuk bagian "Jadwal"
+
+        // Fungsi helper baru untuk memformat angka menjadi Rupiah
+        function formatRupiah(angka) {
+            if (typeof angka !== 'number') { // Pastikan input adalah angka
+                return String(angka); // Kembalikan string jika bukan angka
+            }
+            const formatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0, // Tidak menampilkan desimal untuk mata uang bulat
+                maximumFractionDigits: 0,
+            });
+            // Menghilangkan 'IDR' dan menggantinya dengan 'Rp.'
+            // Contoh output default formatter: "IDR 1.250.000"
+            // Kita ingin: "Rp. 1.250.000"
+            return formatter.format(angka).replace('IDR', 'Rp.');
+        }
+
+
+        // READ Operation: Mengambil semua data dari API (tagihan aktif dan riwayat)
+        async function fetchTagihan() {
+            try {
+                // 1. Ambil tagihan aktif (yang statusnya 'Belum Bayar' dari tabel 'tagihan')
+                const activeResponse = await fetch(API_URL);
+                if (!activeResponse.ok) {
+                    throw new Error(`HTTP error! status: ${activeResponse.status} - ${activeResponse.statusText}`);
+                }
+                activeTagihanData = await activeResponse.json();
+
+                // 2. Ambil data riwayat pembayaran (dari tabel 'riwayat_pembayaran')
+                const historyResponse = await fetch(`${API_URL}?type=riwayat`);
+                if (!historyResponse.ok) {
+                    throw new Error(`HTTP error! status: ${historyResponse.status} - ${historyResponse.statusText}`);
+                }
+                paidHistoryData = await historyResponse.json();
+
+                // 3. Ambil data jadwal (tagihan yang akan jatuh tempo)
+                const jadwalResponse = await fetch(`${API_URL}?type=jadwal`);
+                if (!jadwalResponse.ok) {
+                    throw new Error(`HTTP error! status: ${jadwalResponse.status} - ${jadwalResponse.statusText}`);
+                }
+                upcomingJadwalData = await jadwalResponse.json();
+
+
+                renderTables(); // Panggil fungsi untuk merender semua tabel
+            } catch (error) {
+                console.error('Error fetching tagihan:', error);
+                alert('Gagal memuat data dari server. Pastikan XAMPP dan API berjalan. Detail: ' + error.message);
+            }
+        }
+
+        // Fungsi untuk merender semua tabel
+        function renderTables() {
+            renderTagihanTable(activeTagihanData);
+            renderRiwayatTable(paidHistoryData);
+            renderJadwalList(upcomingJadwalData); // Ini yang akan kita perbaiki tampilannya
+        }
+
+        // Merender data tagihan (status 'Belum Bayar') ke dalam tabel HTML
+        function renderTagihanTable(tagihanToRender) {
+            tagihanTableBody.innerHTML = ''; // Kosongkan tabel
+            if (tagihanToRender.length === 0) {
+                tagihanTableBody.innerHTML = '<tr><td colspan="6" class="text-center">Belum ada tagihan yang perlu dibayar.</td></tr>';
+                return;
+            }
+            // Gunakan 'index + 1' untuk nomor urut yang selalu berurutan
+            tagihanToRender.forEach((tagihan, index) => { // Tambahkan 'index' di sini
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th> <td>${tagihan.nama_tagihan}</td>
+                    <td>${formatRupiah(tagihan.jumlah)}</td> <td>${tagihan.jatuh_tempo}</td>
+                    <td><span class="badge bg-warning text-dark">${tagihan.status}</span></td>
+                    <td class="action-buttons">
+                        <button type="button" class="btn btn-sm btn-info text-white edit-btn" data-bs-toggle="modal" data-bs-target="#editTagihanModal" data-id="${tagihan.id}">Edit</button>
+                        <button type="button" class="btn btn-sm btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#deleteTagihanModal" data-id="${tagihan.id}">Hapus</button>
+                        <button type="button" class="btn btn-sm btn-success mark-as-paid-btn" data-id="${tagihan.id}">Lunas</button>
+                    </td>
+                `;
+                tagihanTableBody.appendChild(row);
+            });
+
+            attachCrudEventListeners(); // Attach listeners setelah tabel dirender ulang
+            attachMarkAsPaidListeners(); // Attach listeners untuk tombol "Lunas"
+        }
+
+        // Fungsi untuk merender data riwayat (status 'Lunas') ke dalam tabel HTML
+        function renderRiwayatTable(riwayatToRender) {
+            riwayatTableBody.innerHTML = ''; // Kosongkan tabel
+            if (riwayatToRender.length === 0) {
+                riwayatTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Belum ada riwayat pembayaran.</td></tr>';
+                return;
+            }
+            // Gunakan 'index + 1' untuk nomor urut yang selalu berurutan
+            riwayatToRender.forEach((riwayat, index) => { // Tambahkan 'index' di sini
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <th scope="row">${index + 1}</th> <td>${riwayat.tanggal_bayar}</td>
+                    <td>${riwayat.nama_tagihan}</td>
+                    <td>${formatRupiah(riwayat.jumlah)}</td> <td><span class="badge bg-success">Lunas</span></td>
+                `;
+                riwayatTableBody.appendChild(row);
+            });
+        }
+
+        // **Fungsi yang Diperbaiki untuk Merapikan Tampilan Jadwal**
+        function renderJadwalList(jadwalToRender) {
+            jadwalList.innerHTML = ''; // Kosongkan daftar
+            if (jadwalToRender.length === 0) {
+                jadwalList.innerHTML = '<li class="list-group-item text-center">Tidak ada jadwal pembayaran mendatang.</li>';
+                return;
+            }
+            jadwalToRender.forEach(jadwal => {
+                const listItem = document.createElement('li');
+                // Menggunakan kelas Bootstrap untuk tata letak yang lebih baik dan responsif
+                listItem.classList.add(
+                    'list-group-item',
+                    'd-flex',
+                    'flex-column', // Untuk tampilan di layar kecil (mobile), item akan bertumpuk secara vertikal
+                    'flex-md-row', // Untuk tampilan di layar medium ke atas, item akan sejajar secara horizontal
+                    'justify-content-between',
+                    'align-items-md-center', // Rata tengah secara vertikal untuk desktop
+                    'py-3' // Padding atas/bawah
+                );
+
+                listItem.innerHTML = `
+                    <div class="mb-2 mb-md-0"> <h6 class="mb-1">${jadwal.nama_tagihan}</h6>
+                        <small class="text-muted">
+                            Jatuh Tempo: <span class="badge bg-info text-dark">${jadwal.jatuh_tempo}</span> &nbsp;
+                            Jumlah: <span class="badge bg-success">${formatRupiah(jadwal.jumlah)}</span>
+                        </small>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <button type="button" class="btn btn-sm btn-info set-reminder-btn" 
+                            data-bs-toggle="modal" data-bs-target="#setReminderModal" 
+                            data-id="${jadwal.id}" 
+                            data-name="${jadwal.nama_tagihan}" 
+                            data-duedate="${jadwal.jatuh_tempo}">
+                            <i class="bi bi-bell-fill me-1"></i> Atur Pengingat
+                        </button>
+                    </div>
+                `;
+                jadwalList.appendChild(listItem);
+            });
+            attachSetReminderListeners(); // Attach listener untuk tombol pengingat
+        }
+
+
+        // Fungsi untuk mengubah status tagihan menjadi 'Lunas' melalui API
+        async function markAsPaid(tagihanId) {
+            const confirmed = confirm("Apakah Anda yakin ingin menandai tagihan ini sebagai Lunas?");
+            if (!confirmed) {
+                return;
+            }
+
+            try {
+                // Kirim permintaan PUT untuk memperbarui status di backend
+                const response = await fetch(`${API_URL}`, { // Kirim ke root API_URL
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: tagihanId, status: 'Lunas' }) // Kirim ID dan status Lunas
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                alert(result.message);
+                fetchTagihan(); // Muat ulang semua data dan render ulang kedua tabel
+            } catch (error) {
+                console.error("Gagal menandai tagihan sebagai lunas:", error);
+                alert("Terjadi kesalahan saat menandai tagihan sebagai lunas: " + error.message);
+            }
+        }
+
+        function attachMarkAsPaidListeners() {
+            document.querySelectorAll('.mark-as-paid-btn').forEach(button => {
+                button.onclick = function() {
+                    const tagihanId = parseInt(this.dataset.id);
+                    markAsPaid(tagihanId);
+                };
+            });
+        }
+
+        function attachCrudEventListeners() {
+            // Edit Button Click (Mengisi modal edit dengan data tagihan dari API)
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                button.onclick = async function() {
+                    const tagihanId = parseInt(this.dataset.id);
+                    // Ambil data dari activeTagihanData
+                    const tagihan = activeTagihanData.find(t => t.id === tagihanId);
+                    if (tagihan) {
+                        document.getElementById('editTagihanId').value = tagihan.id;
+                        document.getElementById('editNamaTagihan').value = tagihan.nama_tagihan;
+                        document.getElementById('editJumlahTagihan').value = parseFloat(tagihan.jumlah);
+                        document.getElementById('editJatuhTempo').value = tagihan.jatuh_tempo;
+                        document.getElementById('editStatusTagihan').value = tagihan.status;
+                    } else {
+                        // Jika tidak ada di activeTagihanData, mungkin ada masalah pengambilan data
+                        alert('Data tagihan tidak ditemukan di daftar aktif.');
+                    }
+                };
+            });
+
+            // Delete Button Click (Menetapkan ID di modal hapus)
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.onclick = function() {
+                    const tagihanId = parseInt(this.dataset.id);
+                    document.getElementById('deleteTagihanId').value = tagihanId;
+                };
+            });
+        }
+
+        // Attach event listener untuk tombol "Atur Pengingat"
+        function attachSetReminderListeners() {
+            document.querySelectorAll('.set-reminder-btn').forEach(button => {
+                button.onclick = function() {
+                    const tagihanId = parseInt(this.dataset.id);
+                    const tagihanName = this.dataset.name;
+                    const tagihanDueDate = this.dataset.duedate;
+
+                    document.getElementById('reminderTagihanId').value = tagihanId;
+                    document.getElementById('reminderTagihanName').textContent = tagihanName;
+                    
+                    // Set default tanggal pengingat ke jatuh tempo tagihan
+                    document.getElementById('reminderDate').value = tagihanDueDate;
+                    // Set default waktu pengingat (misal 09:00)
+                    document.getElementById('reminderTime').value = '09:00'; 
+                };
+            });
+        }
+
+        // CREATE Operation: Menambahkan tagihan baru melalui API
+        addTagihanForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const newTagihan = {
+                nama_tagihan: document.getElementById('namaTagihan').value,
+                jumlah: parseFloat(document.getElementById('hargaTagihan').value),
+                jatuh_tempo: document.getElementById('jatuhTempo').value,
+                status: document.getElementById('statusTagihan').value // Akan selalu "Belum Bayar"
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newTagihan)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                alert(result.message);
+                addTagihanForm.reset();
+                const addModal = bootstrap.Modal.getInstance(document.getElementById('addTagihanModal'));
+                addModal.hide();
+                fetchTagihan(); // Muat ulang semua data dan render ulang
+            } catch (error) {
+                console.error('Error adding tagihan:', error);
+                alert('Gagal menambahkan tagihan: ' + error.message);
+            }
+        });
+
+        // UPDATE Operation: Memperbarui tagihan yang sudah ada melalui API
+        editTagihanForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const idToUpdate = parseInt(document.getElementById('editTagihanId').value);
+            const updatedTagihan = {
+                id: idToUpdate,
+                nama_tagihan: document.getElementById('editNamaTagihan').value,
+                jumlah: parseFloat(document.getElementById('editJumlahTagihan').value),
+                jatuh_tempo: document.getElementById('editJatuhTempo').value,
+                status: document.getElementById('editStatusTagihan').value
+            };
+
+            try {
+                const response = await fetch(API_URL, { // Kirim ke root API_URL
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedTagihan)
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                alert(result.message);
+                const editModal = bootstrap.Modal.getInstance(document.getElementById('editTagihanModal'));
+                editModal.hide();
+                fetchTagihan(); // Muat ulang semua data dan render ulang
+            } catch (error) {
+                console.error('Error updating tagihan:', error);
+                alert('Gagal memperbarui tagihan: ' + error.message);
+            }
+        });
+
+        // DELETE Operation: Menghapus tagihan melalui API
+        confirmDeleteBtn.addEventListener('click', async function() {
+            const idToDelete = parseInt(document.getElementById('deleteTagihanId').value);
+
+            try {
+                const response = await fetch(`${API_URL}?id=${idToDelete}`, {
+                    method: 'DELETE'
+                });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                alert(result.message);
+                const deleteModal = bootstrap.Modal.getInstance(document.getElementById('deleteTagihanModal'));
+                deleteModal.hide();
+                fetchTagihan(); // Muat ulang semua data dan render ulang
+            } catch (error) {
+                console.error('Error deleting tagihan:', error);
+                alert('Gagal menghapus tagihan: ' + error.message);
+            }
+        });
+
+        // Handler untuk submit form "Atur Pengingat"
+        setReminderForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const tagihanId = parseInt(document.getElementById('reminderTagihanId').value);
+            const reminderDate = document.getElementById('reminderDate').value;
+            const reminderTime = document.getElementById('reminderTime').value;
+
+            // Pastikan data penting terisi
+            if (!tagihanId || !reminderDate || !reminderTime) {
+                alert('Silakan lengkapi semua data pengingat.');
+                return;
+            }
+
+            // Gabungkan tanggal dan waktu untuk timestamp
+            const scheduledTime = `${reminderDate} ${reminderTime}:00`; // Menambahkan ":00" untuk detik
+
+            try {
+                const response = await fetch(`${API_URL}?action=set_reminder`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        tagihan_id: tagihanId,
+                        scheduled_time: scheduledTime
+                        // Anda bisa menambahkan chat_id Telegram di sini jika sudah ada di sisi frontend
+                        // contoh: telegram_chat_id: 'YOUR_TELEGRAM_CHAT_ID' 
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                alert(result.message);
+                setReminderForm.reset();
+                const reminderModal = bootstrap.Modal.getInstance(setReminderModal);
+                reminderModal.hide();
+                // Tidak perlu fetchTagihan lagi, karena ini hanya menambahkan pengingat
+                // dan tidak mengubah tabel tagihan aktif atau riwayat
+            } catch (error) {
+                console.error('Error setting reminder:', error);
+                alert('Gagal mengatur pengingat: ' + error.message);
+            }
+        });
+
+
+        // --- SPA Logic ---
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            const contentSections = document.querySelectorAll('main .content-section');
+
+            function showSection(sectionId) {
+                navLinks.forEach(link => link.classList.remove('active'));
+                contentSections.forEach(section => section.classList.remove('active'));
+
+                const activeNavLink = document.querySelector(`.navbar-nav .nav-link[data-section="${sectionId}"]`);
+                if (activeNavLink) {
+                    activeNavLink.classList.add('active');
+                }
+
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                    history.pushState(null, '', `#${sectionId}`);
+                    window.scrollTo(0, 0);
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+                });
+            });
+
+            const initialHash = window.location.hash.substring(1);
+            if (initialHash && document.getElementById(initialHash)) {
+                showSection(initialHash);
+            } else {
+                showSection('tagihan'); // Default section jika tidak ada hash
+            }
+
+            // Inisialisasi AOS (Animate On Scroll)
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+
+            // Update year for footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Panggil fetchTagihan saat DOM sudah dimuat untuk pertama kali
+            fetchTagihan();
+        });
+    </script>
+</body>
+
+</html>
