@@ -35,11 +35,17 @@
     }
     .btn-signup {
       background-color: purple;
-      color: #800080;
+      color: white;
       width: 100%;
       margin-top: 15px;
       border-radius: 8px;
     }
+
+     .btn-signup:hover {
+            background-color: #5a35a2;
+            color: white;
+        }
+
     .signup-footer a {
       color: purple;
       text-decoration: none;

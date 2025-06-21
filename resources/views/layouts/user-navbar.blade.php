@@ -1,9 +1,9 @@
 <header class="fbs__net-navbar navbar navbar-expand-lg dark bg-light fixed-top"
         aria-label="freebootstrap.net navbar">
         <div class="container d-flex align-items-center justify-content-between">
-            <a class="navbar-brand w-auto" href="{{ url('/') }}">
-                <img class="logo dark img-fluid" src="{{ asset('') }}assets/images/logo.png" alt="Tarobill Logo">
-                <img class="logo light img-fluid" src="{{ asset('') }}assets/images/logo.png" alt="Tarobill Logo">
+            <a class="navbar-brand w-auto" href="">
+                <img class="logo dark img-fluid" src="{{ asset('') }}assetsBackend/images/logo-landscape.png" alt="Tarobill Logo">
+                <img class="logo light img-fluid" src="{{ asset('') }}assetsBackend/images/logo-landscape.png" alt="Tarobill Logo">
             </a>
             <div class="offcanvas offcanvas-start w-75" id="fbs__net-navbars" tabindex="-1"
                 aria-labelledby="fbs__net-navbarsLabel">
@@ -40,16 +40,16 @@
     </div>
 </header>
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="margin-top: 15vh !important;">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="border-bottom: none;">
         <h5 class="modal-title" id="logoutModalLabel">Konfirmasi Logout</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
         Apakah Anda yakin ingin logout?
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="border-top: none;">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         <button type="button" class="btn btn-danger" onclick="document.getElementById('logout-form').submit();">
           Logout

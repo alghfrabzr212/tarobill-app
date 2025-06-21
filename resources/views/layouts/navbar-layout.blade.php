@@ -1,26 +1,26 @@
-<div class="navbar-custom topnav-navbar topnav-navbar-dark">
+<div class="navbar-custom topnav-navbar topnav-navbar-dark" style="background-color:rgb(255, 255, 255);">
     <div class="container-fluid">
 
         <!-- LOGO -->
-        <a href="index.html" class="topnav-logo">
-            <span class="topnav-logo-lg">
-                <img src="{{ asset('assetsBackend/images/logo-light.png') }}" alt="" height="16">
-            </span>
-            <span class="topnav-logo-sm">
-                <img src="{{ asset('assetsBackend/images/logo_sm.png') }}" alt="" height="16">
-            </span>
-        </a>
+<a href="" class="topnav-logo">
+    <span class="topnav-logo-lg">
+        <img src="{{ asset('') }}assetsBackend/images/logo-landscape.png" alt="" style="height: 40px;">
+    </span>
+    <span class="topnav-logo-sm">
+        <img src="{{ asset('') }}assetsBackend/images/logo-landscape.png" alt="" style="height: 24px;">
+    </span>
+</a>
 
         <ul class="list-unstyled topbar-menu float-end mb-0">
 
             <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle nav-user arrow-none me-0" style="background-color:rgb(255, 255, 255);" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                     <span class="account-user-avatar"> 
                         <img src="{{ asset('assetsBackend/images/users/avatar-1.png') }}" alt="user-image" class="rounded-circle">
                     </span>
                     <span>
-                        <span class="account-user-name">Admin</span>
-                        <span class="account-position">Administrator</span>
+                        <span class="account-user-name text-dark">Admin</span>
+                        <span class="account-position text-dark">Administrator</span>
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown" aria-labelledby="topbar-userdrop">

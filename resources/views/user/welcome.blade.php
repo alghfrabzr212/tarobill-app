@@ -10,6 +10,7 @@ License: https://freebootstrap.net/license
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="assets/images/logo.png" type="images/logo.png">
   <title>Taro</title>
 
   <!-- ======= Google Font =======-->
@@ -50,16 +51,16 @@ License: https://freebootstrap.net/license
       <div class="container d-flex align-items-center justify-content-between">
 
         <!-- Start Logo-->
-        <a class="navbar-brand w-auto" href="index.html">
+        <a class="navbar-brand w-auto" href="">
           <!-- If you use a text logo, uncomment this if it is commented-->
           <!-- Vertex-->
 
           <!-- If you plan to use an image logo, uncomment this if it is commented-->
 
-          <!-- logo dark--><img class="logo dark img-fluid" src="{{ asset('') }}assets/images/logo.png"
+          <!-- logo dark--><img class="logo dark img-fluid" src="{{ asset('') }}assetsBackend/images/logo-landscape.png"
             alt="FreeBootstrap.net image placeholder">
 
-          <!-- logo light--><img class="logo light img-fluid" src="{{ asset('') }}assets/images/logo.png"
+          <!-- logo light--><img class="logo light img-fluid" src="{{ asset('') }}assetsBackend/images/logo-landscape.png"
             alt="FreeBootstrap.net image placeholder">
 
         </a>
@@ -160,7 +161,7 @@ License: https://freebootstrap.net/license
                     pengelolaan tagihan yang aman, efisien, dan ramah pengguna bersama Tarobill.</p>
                   <div class="cta d-flex gap-2 mb-4 mb-lg-5" data-aos="fade-up" data-aos-delay="300">
                     @guest
-                <a class="btn btn-login py-2" href="{{ url('login') }}">Daftar Sekarang</a>
+                <a class="btn btn-login py-2" href="{{ url('register') }}">Daftar Sekarang</a>
             @endguest
 
             @auth
@@ -297,8 +298,7 @@ License: https://freebootstrap.net/license
             <div class="col-lg-5 mx-auto text-center"><span class="subtitle text-uppercase mb-3" data-aos="fade-up"
                 data-aos-delay="0">Testimoni</span>
               <h2 class="mb-3" data-aos="fade-up" data-aos-delay="100">Apa Kata Mereka</h2>
-              <p data-aos="fade-up" data-aos-delay="200">Real Stories of Success and Satisfaction from Our Diverse
-                Community</p>
+              <p data-aos="fade-up" data-aos-delay="200">Orang-orang yang telah terbantu dengan hadirnya TaroBill</p>
             </div>
           </div>
           <div class="row g-4" data-masonry="{&quot;percentPosition&quot;: true }">

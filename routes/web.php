@@ -68,6 +68,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/bills/{id}/edit', [BillController::class, 'edit'])->name('bills.edit');
         Route::put('/bills/{id}', [BillController::class, 'update'])->name('bills.update');
         Route::delete('/bills/{id}', [BillController::class, 'destroy'])->name('bills.destroy');
+        Route::get('/jadwal', [UserController::class, 'jadwal'])->name('jadwal');
     });
 });
 

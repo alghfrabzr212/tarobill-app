@@ -51,6 +51,7 @@
 
         .btn-login:hover {
             background-color: #5a35a2;
+            color: white;
         }
 
         .login-footer a {

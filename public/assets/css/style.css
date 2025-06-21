@@ -289,13 +289,13 @@ h6 {
 }
 
 .fbs__net-navbar {
-  position: absolute;
+  position: fixed;
   top: 0;
   -webkit-transition: 0.3s all ease-in-out;
   transition: 0.3s all ease-in-out;
   z-index: 99999;
   width: 100%;
-  background-color: transparent !important;
+  background-color: white;
   border: none;
 }
 @media (min-width: 992px) {
@@ -317,6 +317,8 @@ h6 {
 }
 .fbs__net-navbar .navbar-brand .logo.dark {
   display: none;
+  width: 150px;
+  height: auto;
 }
 .fbs__net-navbar .navbar-brand .logo.light {
   display: block;
@@ -1372,7 +1374,7 @@ border-color: #6a006a !important;
 
         /* Tambahan: Pastikan main content memiliki padding atas untuk menghindari bertumpuk dengan navbar */
         body {
-            padding-top: 70px;
+            padding-top: 0;
             /* Sesuaikan sesuai tinggi navbar Anda */
         }
 

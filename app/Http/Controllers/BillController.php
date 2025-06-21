@@ -23,9 +23,15 @@ class BillController extends Controller
     }
 
     // TAGIHAN (CRUD)
-    public function index()
+     public function index()
     {
-        $tagihan = Bill::where('user_id', Auth::id())->get();
+        // === PERBAIKI DI SINI ===
+        // Ambil hanya tagihan yang statusnya BUKAN 'Lunas'
+        $tagihan = Bill::where('user_id', Auth::id())
+                        ->where('status', '!=', 'Lunas') // <-- TAMBAHKAN FILTER INI
+                        ->orderBy('tanggal_jatuh_tempo', 'asc') // Opsional: urutkan agar rapi
+                        ->get();
+        // =======================
         return view('user.tagihan.index', compact('tagihan'));
     }
 
@@ -52,8 +58,8 @@ class BillController extends Controller
             ]);
 
             // Kirim email notifikasi
-            $tagihan->load('user'); // penting agar $tagihan->user tidak null
-            Mail::to($tagihan->user->email)->send(new TagihanBaruMail($tagihan));
+           // $tagihan->load('user'); // penting agar $tagihan->user tidak null
+           // Mail::to($tagihan->user->email)->send(new TagihanBaruMail($tagihan));
 
         } catch (\Throwable $th) {
             throw $th;

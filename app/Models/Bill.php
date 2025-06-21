@@ -15,6 +15,12 @@ class Bill extends Model
         'harga',
         'tanggal_jatuh_tempo',
         'status',
+        'email_reminder_sent_at', // <<< PASTIKAN INI ADA
+    ];
+
+    protected $casts = [
+        'tanggal_jatuh_tempo' => 'date',
+        'email_reminder_sent_at' => 'datetime', // <<< PASTIKAN INI ADA
     ];
 
     public function user()
